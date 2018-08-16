@@ -1,5 +1,5 @@
 # nur-packages
-/My personal [NUR](https://github.com/nix-community/NUR) repository/
+*My personal [NUR](https://github.com/nix-community/NUR) repository*
 
 [![Build Status][Travis badge]][Travis link]
 [![Cachix Cache][Cachix badge]][Cachix link]
