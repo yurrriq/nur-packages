@@ -4,7 +4,7 @@ sudo: false
 
 env:
   global:
-    - CACHIX_CACHE=
+    - CACHIX_CACHE=yurrriq-nur-packages
     - NUR_REPO=yurrriq
 
 install:
