@@ -1,17 +1,19 @@
 { stdenv, fetchurl, kubectl }:
+
 let
   isLinux = stdenv.isLinux;
   arch = if isLinux
          then "linux-amd64"
          else "darwin-amd64";
   checksum = if isLinux
-             then "1fk6w6sajdi6iphxrzi9r7xfyaf923nxcqnl01s6x3f611fjvbjn"
-             else "1jzgy641hm3khj0bakfbr5wd5zl3s7w5jb622fjv2jxwmnv7dxiv";
+             then "1zig6ihmxcaw2wsbdd85yf1zswqcifw0hvbp1zws7r5ihd4yv8hg"
+             else "1l8y9i8vhibhwbn5kn5qp722q4dcx464kymlzy2bkmhiqbxnnkkw";
   pname = "helm";
-  version = "2.9.1";
 in
-stdenv.mkDerivation {
+
+stdenv.mkDerivation rec {
   name = "${pname}-${version}";
+  inherit (meta) version;
 
   src = fetchurl {
     url = "https://kubernetes-helm.storage.googleapis.com/helm-v${version}-${arch}.tar.gz";
@@ -41,10 +43,11 @@ stdenv.mkDerivation {
   '';
 
   meta = with stdenv.lib; {
-    homepage = https://github.com/kubernetes/helm;
+    version = "2.10.0";
     description = "A package manager for kubernetes";
+    inherit (src.meta) homepage;
     license = licenses.asl20;
-    maintainers = [ maintainers.rlupton20 ];
+    maintainers = with maintainers; [ rlupton20 yurrriq ];
     platforms = [ "x86_64-linux" ] ++ platforms.darwin;
   };
 }
