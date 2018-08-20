@@ -2,22 +2,39 @@
 
 stdenv.mkDerivation rec {
   name = "kubectx-${version}";
-  version = "v0.5.0";
+  inherit (meta) version;
 
   src = fetchFromGitHub {
     owner = "ahmetb";
     repo = "kubectx";
-    rev = version;
-    sha256 = "18ncg0sjsav71ajnhhhf8qdms7m34mgpm0plfybfmxsmn8b1ryzm";
+    rev = "v${version}";
+    sha256 = "1bmmaj5fffx4hy55l6x4vl5gr9rp2yhg4vs5b9sya9rjvdkamdx5";
   };
 
   dontBuild = true;
 
   installPhase = ''
-    install -Dt $out/bin/ -m755 kubectx kubens
+    install -dm755 "$out/share/bash-completion/completions/"
+    install -dm755 "$out/share/fish/vendor_conf.d/"
+    install -dm755 "$out/share/zsh/site-functions/"
+
+    for tool in kubectx kubens
+    do
+        install -Dt "$out/bin/" -m755 "$tool"
+
+        local completion="completion/$tool"
+
+        install -Dt "$out/share/$tool/completion/" \
+                -m444 "$completion.bash" "$completion.fish" "$completion.zsh"
+
+        ln -s "$out/share/$tool/$completion.bash" "$out/share/bash-completion/completions/"
+        ln -s "$out/share/$tool/$completion.fish" "$out/share/fish/vendor_conf.d/"
+        ln -s "$out/share/$tool/$completion.zsh"  "$out/share/zsh/site-functions/"
+    done
   '';
 
   meta = with stdenv.lib; {
+    version = "0.5.1";
     description = "Fast way to switch between clusters and namespaces in kubectl";
     license = licenses.asl20;
     inherit (src.meta) homepage;
