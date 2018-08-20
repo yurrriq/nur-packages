@@ -1,5 +1,4 @@
-{ stdenv, lib, fetchFromGitHub, fetchpatch, removeReferencesTo, which, go_1_9, go-bindata, makeWrapper, rsync
-, iptables, coreutils
+{ stdenv, lib, fetchFromGitHub, removeReferencesTo, which, go_1_9, go-bindata, makeWrapper, rsync
 , components ? [
     "cmd/kubeadm"
     "cmd/kubectl"
@@ -16,13 +15,13 @@ with lib;
 
 stdenv.mkDerivation rec {
   name = "kubernetes-${version}";
-  version = "1.10.4";
+  inherit (meta) version;
 
   src = fetchFromGitHub {
     owner = "kubernetes";
     repo = "kubernetes";
     rev = "v${version}";
-    sha256 = "0q1llnqy83fkx3vhcfjyl3frd41h7g1cvl38lfhsz1z1v9av3bpd";
+    sha256 = "1k6ayb43l68l0qw31cc4k1pwvm8aks3l2xm0gdxdxbbww1mnzix2";
   };
 
   # Build using golang v1.9 in accordance with https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.10.md#external-dependencies
@@ -67,10 +66,11 @@ stdenv.mkDerivation rec {
   '';
 
   meta = {
+    version = "1.10.7";
     description = "Production-Grade Container Scheduling and Management";
     license = licenses.asl20;
     homepage = https://kubernetes.io;
-    maintainers = with maintainers; [johanot offline];
+    maintainers = with maintainers; [ johanot offline yurrriq ];
     platforms = platforms.unix;
   };
 }
