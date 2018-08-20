@@ -26,6 +26,8 @@
 
     kubernetes = pkgs.callPackage ./pkgs/applications/networking/cluster/kubernetes {};
 
+    kubernetes-helm = pkgs.callPackage ./pkgs/applications/networking/cluster/helm {};
+
   };
 
 }
