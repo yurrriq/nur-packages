@@ -20,6 +20,8 @@
 
     sourcetree = pkgs.callPackage ./pkgs/os-specific/darwin/sourcetree {};
 
+    kubectx = pkgs.callPackage ./pkgs/applications/networking/cluster/kubectx {};
+
     kubernetes = pkgs.callPackage ./pkgs/applications/networking/cluster/kubernetes {};
 
   };
