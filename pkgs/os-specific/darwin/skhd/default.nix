@@ -2,14 +2,18 @@
 
 stdenv.mkDerivation rec {
   name = "skhd-${version}";
-  version = "0.2.2";
+  version = "0.2.5";
 
   src = fetchFromGitHub {
     owner = "koekeishiya";
     repo = "skhd";
     rev = "v${version}";
-    sha256 = "0mn6svz2mqbpwlx510r447vflfcxryykpin6h6429dlz0wjlipa8";
+    sha256 = "184bcnxmc5jjv793d53xbhvifz4cslaga3jcgdvagjd8680p5n77";
   };
+
+  patches = [
+    ./define_MAX_once.patch
+  ];
 
   buildInputs = [ Carbon ];
 
@@ -23,9 +27,9 @@ stdenv.mkDerivation rec {
 
   meta = with stdenv.lib; {
     description = "Simple hotkey daemon for macOS";
-    homepage = https://github.com/koekeishiya/skhd;
+    inherit (src.meta) homepage;
     platforms = platforms.darwin;
-    maintainers = with maintainers; [ lnl7 periklis ];
+    maintainers = with maintainers; [ lnl7 periklis yurrriq ];
     license = licenses.mit;
   };
 }
