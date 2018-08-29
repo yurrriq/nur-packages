@@ -2,12 +2,12 @@
 
 stdenv.mkDerivation rec {
   name = "skhd-${version}";
-  version = "0.2.5";
+  version = "e616840f";
 
   src = fetchFromGitHub {
     owner = "koekeishiya";
     repo = "skhd";
-    rev = "v${version}";
+    rev = "e616840f72bc0c2c18c1011a3d333fc15adabbfd";
     sha256 = "184bcnxmc5jjv793d53xbhvifz4cslaga3jcgdvagjd8680p5n77";
   };
 
