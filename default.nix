@@ -2,6 +2,8 @@
 
 {
 
+  lib = import ./lib;
+
   modules = import ./modules;
 
   overlays = import ./overlays;
