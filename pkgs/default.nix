@@ -17,7 +17,7 @@ in
     enableDebugInfo = true;
     installTargets = "install";
     wxSupport = false;
-  };
+  } // { meta.broken = true; };
 
   gap-pygments-lexer = pkgs.callPackage ./tools/misc/gap-pygments-lexer {
     pythonPackages = pkgs.python2Packages;
