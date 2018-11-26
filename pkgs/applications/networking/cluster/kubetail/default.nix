@@ -13,6 +13,12 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     install -Dm755 kubetail $out/bin/kubetail
+
+    install -Dm755 completion/kubetail.bash "$out/share/bash-completion/completions/kubetail"
+
+    install -Dt "$out/share/fish/vendor_completions.d/" -m755 completion/kubetail.fish
+
+    install -Dm755 completion/kubetail.zsh "$out/share/zsh/site-functions/_kubetail"
   '';
 
   meta = with lib; {
