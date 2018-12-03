@@ -11,7 +11,7 @@ in
 
 {
 
-  inherit (_nixpkgs) autojump helmfile kops kube-prompt kubernetes-helm minikube;
+  inherit (_nixpkgs) autojump helmfile kops kube-prompt kubernetes-helm kubetail minikube;
 
   erlang = pkgs.beam.interpreters.erlangR20.override {
     enableDebugInfo = true;
@@ -28,8 +28,6 @@ in
   kubectx = pkgs.callPackage ./applications/networking/cluster/kubectx {};
 
   kubernetes = pkgs.callPackage ./applications/networking/cluster/kubernetes {};
-
-  kubetail = pkgs.callPackage ./applications/networking/cluster/kubetail {};
 
   lab = pkgs.callPackage ./applications/version-management/git-and-tools/lab {};
 
