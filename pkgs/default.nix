@@ -3,8 +3,8 @@
 let
 
   _nixpkgs = lib.pinnedNixpkgs {
-    rev = "10e029829c66d34e387836dfd67e25ec67f7b894";
-    sha256 = "183cimyznfdjgl62zp458y92xsk95w3b362sapga6fzvy1cq4k6k";
+    rev = "6a0f0cce63b65e41ab679cc66a20f9acfc0d61c3";
+    sha256 = "0dnzw8cxkx231mb2da0rfh13p0q66pic2xrgjm18izqdn5vm7qym";
   };
 
 in
