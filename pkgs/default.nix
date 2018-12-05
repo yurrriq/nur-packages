@@ -33,6 +33,11 @@ in
 
 } // (if pkgs.stdenv.isDarwin then {
 
+  chunkwm = pkgs.recurseIntoAttrs (pkgs.callPackage ./os-specific/darwin/chunkwm {
+    inherit (pkgs) callPackage stdenv fetchFromGitHub imagemagick;
+    inherit (pkgs.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
+  });
+
   clementine = pkgs.callPackage ./applications/audio/clementine {};
 
   copyq = pkgs.callPackage ./applications/misc/copyq {};
