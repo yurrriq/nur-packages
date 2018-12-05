@@ -56,6 +56,17 @@ in
 
   onyx = pkgs.callPackage ./os-specific/darwin/onyx {};
 
+  skhd = pkgs.skhd.overrideAttrs (_: rec {
+    name = "skhd-${version}";
+    version = "0.3.0";
+    src = pkgs.fetchFromGitHub {
+      owner = "koekeishiya";
+      repo = "skhd";
+      rev = "v${version}";
+      sha256 = "13pqnassmzppy2ipv995rh8lzw9rraxvi0ph6zgy63cbsdfzbhgl";
+    };
+  });
+
   skim = pkgs.callPackage ./applications/misc/skim {};
 
   sourcetree = pkgs.callPackage ./os-specific/darwin/sourcetree {};
