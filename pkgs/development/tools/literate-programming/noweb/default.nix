@@ -1,31 +1,57 @@
-{ stdenv, fetchurl, gawk, icon-lang }:
+{ stdenv, fetchFromGitHub, fetchurl, gawk }:
 
-stdenv.mkDerivation {
-  name = "noweb-2.11b";
-  src = fetchurl {
-    urls = [ "http://ftp.de.debian.org/debian/pool/main/n/noweb/noweb_2.11b.orig.tar.gz"
-             "ftp://www.eecs.harvard.edu/pub/nr/noweb.tgz"
-          ];
-    sha256 = "10hdd6mrk26kyh4bnng4ah5h1pnanhsrhqa7qwqy6dyv3rng44y9";
+let noweb = stdenv.mkDerivation rec {
+  name = "${pname}-${version}";
+  version = "2.12";
+  pname = "noweb";
+  tlType = "run";
+
+  src = fetchFromGitHub {
+    owner = "nrnrnr";
+    repo = "noweb";
+    rev = "v${builtins.replaceStrings ["."] ["_"] version}";
+    sha256 = "1160i2ghgzqvnb44kgwd6s3p4jnk9668rmc15jlcwl7pdf3xqm95";
   };
+
+  outputs = [ "out" "bin" "lib" "man" "tex" ];
+
   preBuild = ''
-    mkdir -p $out/lib/noweb
+    mkdir -p "$lib/lib/noweb"
     cd src
-    makeFlags="BIN=$out/bin LIB=$out/lib/noweb MAN=$out/share/man TEXINPUTS=$out/share/texmf/tex/latex LIBSRC=icon ICONC=icont"
   '';
-  preInstall=''mkdir -p $out/share/texmf/tex/latex'';
+
+  installFlags = [
+    "BIN=$(bin)/bin"
+    "LIB=$(lib)/lib/noweb"
+    "MAN=$(man)/share/man"
+    "TEXINPUTS=$(tex)/tex/latex/noweb"
+  ];
+
+  preInstall = ''
+    mkdir -p "$tex/tex/latex/noweb"
+  '';
+
   postInstall= ''
-    substituteInPlace $out/bin/cpif --replace "PATH=/bin:/usr/bin" ""
-    for f in $out/bin/{noweb,nountangle,noroots,noroff,noindex} \
-             $out/lib/noweb/{toroff,btdefn,totex,noidx,unmarkup,toascii,tohtml,emptydefn}; do
-      substituteInPlace $f --replace "nawk" "${gawk}/bin/awk"
+    substituteInPlace "$bin/bin/cpif" --replace "PATH=/bin:/usr/bin" ""
+
+    for f in $bin/bin/no{index,roff,roots,untangle,web} \
+             $lib/lib/noweb/to{ascii,html,roff,tex} \
+             $lib/lib/noweb/{bt,empty}defn \
+             $lib/lib/noweb/{noidx,unmarkup}; do
+      substituteInPlace "$f" --replace "nawk" "${gawk}/bin/awk"
     done
+
+    ln -s "$bin/bin" "$out/bin"
+    ln -s "$lib/lib" "$out/lib"
+    mkdir -p "$out/share"
+    ln -s "$tex" "$out/share/texmf"
   '';
+
   patches = [ ./no-FAQ.patch ];
 
-  buildInputs = [ icon-lang ];
-  
-  meta = {
-    platforms = stdenv.lib.platforms.linux;
+  meta = with stdenv.lib; {
+    license = licenses.bsd2;
+    platforms = platforms.linux;
+    maintainers = with maintainers; [ yurrriq ];
   };
-}
+}; in noweb // { pkgs = [ noweb.tex ]; }
