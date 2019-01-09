@@ -46,6 +46,8 @@ in
     inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa;
   };
 
+  icon-lang = pkgs.callPackage ./os-specific/darwin/icon-lang {};
+
   m-cli = pkgs.m-cli.overrideAttrs (_: rec {
     name = "m-cli-${version}";
     version = "d03d8b9";
