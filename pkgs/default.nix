@@ -12,6 +12,7 @@ in
 rec {
 
   inherit (_nixpkgs) autojump helmfile kops kube-prompt kubernetes-helm kubetail minikube;
+  inherit (_nixpkgs.gitAndTools) git-crypt;
 
   erlang = pkgs.beam.interpreters.erlangR20.override {
     enableDebugInfo = true;
@@ -22,8 +23,6 @@ rec {
   gap-pygments-lexer = pkgs.callPackage ./tools/misc/gap-pygments-lexer {
     pythonPackages = pkgs.python2Packages;
   };
-
-  git-crypt = pkgs.callPackage ./applications/version-management/git-and-tools/git-crypt {};
 
   icon-lang = pkgs.callPackage ./development/interpreters/icon-lang {
     withGraphics = false;
