@@ -11,7 +11,7 @@ in
 
 rec {
 
-  inherit (_nixpkgs) autojump helmfile kops kube-prompt kubernetes-helm kubetail minikube;
+  inherit (_nixpkgs) autojump kops kubernetes-helm kubetail;
   inherit (_nixpkgs.gitAndTools) git-crypt;
 
   erlang = pkgs.beam.interpreters.erlangR20.override {
