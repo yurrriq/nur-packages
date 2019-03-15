@@ -18,8 +18,8 @@ rec {
     inherit (pkgs.haskellPackages) alex happy Agda ghcWithPackages;
   };
 
-  emacsPackages = pkgs.emacsPackages // {
-    inherit (_nixpkgs.emacsPackages) cedille;
+  emacsPackages.cedille = _nixpkgs.emacsPackages.cedille.override {
+    inherit cedille;
   };
 
   erlang = pkgs.beam.interpreters.erlangR20.override {
