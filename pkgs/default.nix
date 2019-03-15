@@ -14,6 +14,12 @@ rec {
   inherit (_nixpkgs) autojump kubetail;
   inherit (_nixpkgs.gitAndTools) git-crypt;
 
+  inherit (_nixpkgs) cedille;
+
+  emacsPackages = pkgs.emacsPackages // {
+    inherit (_nixpkgs.emacsPackages) cedille;
+  };
+
   erlang = pkgs.beam.interpreters.erlangR20.override {
     enableDebugInfo = true;
     installTargets = "install";
