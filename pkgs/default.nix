@@ -14,7 +14,9 @@ rec {
   inherit (_nixpkgs) autojump kubetail;
   inherit (_nixpkgs.gitAndTools) git-crypt;
 
-  inherit (_nixpkgs) cedille;
+  cedille = _nixpkgs.cedille.override {
+    inherit (pkgs.haskellPackages) alex happy Agda ghcWithPackages;
+  };
 
   emacsPackages = pkgs.emacsPackages // {
     inherit (_nixpkgs.emacsPackages) cedille;
