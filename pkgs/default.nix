@@ -21,6 +21,23 @@ let
     '';
   };
 
+  mkKops =  { version, sha256 }: _nixpkgs.kops.overrideAttrs(old: rec {
+    pname = "kops";
+    name = "${pname}-${version}";
+    inherit version;
+    src = _nixpkgs.fetchFromGitHub {
+      rev = version;
+      owner = "kubernetes";
+      repo = "kops";
+      inherit sha256;
+    };
+    buildFlagsArray = ''
+      -ldflags=
+          -X k8s.io/kops.Version=${version}
+          -X k8s.io/kops.GitVersion=${version}
+    '';
+  });
+
   mkKubernetes = { version, sha256 }: _nixpkgs.kubernetes.overrideAttrs(old: rec {
     pname = "kubernetes";
     name = "${pname}-${version}";
@@ -33,9 +50,18 @@ let
     };
   });
 
+  buildK8sEnv = { name, config }: pkgs.buildEnv {
+    inherit name;
+    paths = [
+      (mkKubernetes config.k8s)
+      (mkKops config.kops)
+      (mkHelmBinary config.helm)
+    ];
+  };
 in
 
 rec {
+  inherit buildK8sEnv mkHelmBinary mkKubernetes;
 
   inherit (_nixpkgs) autojump kubetail;
   inherit (_nixpkgs.gitAndTools) git-crypt;
@@ -69,29 +95,15 @@ rec {
 
   kubectx = (_nixpkgs.kubectx.override { inherit kubectl; });
 
-  kubernetes = kubernetes-1_11_7;
-
-  kubernetes-1_11_7 = mkKubernetes {
+  kubernetes = mkKubernetes {
     version = "1.11.7";
     sha256 = "03dq9p6nwkisd80f0r3sp82vqx2ac4ja6b2s55k1l8k89snfxavf";
   };
 
-  kops = _nixpkgs.kops.overrideAttrs(old: rec {
-    pname = "kops";
-    name = "${pname}-${version}";
+  kops = mkKops {
     version = "1.11.1";
-    src = _nixpkgs.fetchFromGitHub {
-      rev = version;
-      owner = "kubernetes";
-      repo = "kops";
-      sha256 = "0jia8dhawh786grnbpn64hvsdm6wz5p7hqir01q5xxpd1psnzygj";
-    };
-    buildFlagsArray = ''
-      -ldflags=
-          -X k8s.io/kops.Version=${version}
-          -X k8s.io/kops.GitVersion=${version}
-    '';
-  });
+    sha256 = "0jia8dhawh786grnbpn64hvsdm6wz5p7hqir01q5xxpd1psnzygj";
+  };
 
   # inherit (_nixpkgs) kubernetes-helm;
 
@@ -114,9 +126,7 @@ rec {
   #   '';
   # });
 
-  kubernetes-helm = kubernetes-helm-2_12_3;
-
-  kubernetes-helm-2_12_3 = mkHelmBinary {
+  kubernetes-helm = mkHelmBinary {
     flavor = "darwin-amd64";
     version = "2.12.3";
     sha256 = "0lcnmwqpf5wwq0iw81nlk5fpj4j5p4r6zkrjvbqw5mrjacpa9qf9";
