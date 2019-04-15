@@ -138,6 +138,24 @@ rec {
     sha256 = "0a21xigcblhc9wikl7ilqvs7514ds4x71jz4yv2kvv1zjvdd9i8n";
   };
 
+  helmfile = (_nixpkgs.helmfile.overrideAttrs(old: rec {
+    pname = "helmfile";
+    name = "helmfile-${version}";
+    version = "0.54.0";
+    src = _nixpkgs.fetchFromGitHub {
+      owner = "roboll";
+      repo = "helmfile";
+      rev = "v${version}";
+      sha256 = "0x0kh1dshyygsh22sd5ncbimqx3sl3vn1pdr0spzhfy628rg7lax";
+    };
+    buildFlagsArray = ''
+      -ldflags=
+      -X main.Version=${version}
+    '';
+  })).override {
+    inherit kubernetes-helm;
+  };
+
   lab = pkgs.callPackage ./applications/version-management/git-and-tools/lab {};
 
   noweb = pkgs.callPackage ./development/tools/literate-programming/noweb {
