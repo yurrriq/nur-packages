@@ -2,10 +2,7 @@
 
 let
 
-  _nixpkgs = lib.pinnedNixpkgs {
-    rev = "c793258a88a437f2bf473f67b5aa47150bd5bd7d";
-    sha256 = "1ypylf7cf1lsx481zn2i9fhjy6hswn3av55b7z3r3wr489iniw2n";
-  };
+  _nixpkgs = lib.pinnedNixpkgs (lib.fromJSONFile ../nixpkgs.json);
 
 in
 
