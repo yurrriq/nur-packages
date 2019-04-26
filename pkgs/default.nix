@@ -1,4 +1,4 @@
-{ lib, pkgs, }:
+{ lib, pkgs }:
 
 let
 
@@ -10,7 +10,7 @@ let
 in
 
 rec {
-inherit (lib) buildK8sEnv;
+  inherit (lib) buildK8sEnv;
 
   inherit (_nixpkgs) autojump;
   inherit (_nixpkgs.gitAndTools) git-crypt;
