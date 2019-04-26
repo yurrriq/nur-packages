@@ -66,7 +66,7 @@ rec {
     };
   });
 
-  inherit (_nixpkgs) musescore;
+  inherit (_nixpkgs) kitty musescore;
 
   onyx = pkgs.callPackage ./os-specific/darwin/onyx {};
 
