@@ -19,9 +19,11 @@ rec {
 
   inherit vgo2nix;
 
-  cedille = _nixpkgs.cedille.override {
+  cedille = (_nixpkgs.cedille.override {
     inherit (pkgs.haskellPackages) alex happy Agda ghcWithPackages;
-  };
+  }).overrideAttrs (_: {
+    meta.broken = true;
+  });
 
   emacsPackages.cedille = _nixpkgs.emacsPackages.cedille.override {
     inherit cedille;
