@@ -29,7 +29,7 @@ rec {
     inherit cedille;
   };
 
-  erlang = pkgs.beam.interpreters.erlangR20.override {
+  erlang = pkgs.beam.interpreters.erlangR21.override {
     enableDebugInfo = true;
     installTargets = "install";
     wxSupport = false;
