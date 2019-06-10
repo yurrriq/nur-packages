@@ -47,7 +47,9 @@ rec {
   lab = pkgs.callPackage ./applications/version-management/git-and-tools/lab {};
 
   lilypond = pkgs.callPackage ./misc/lilypond { guile = pkgs.guile_1_8; };
-  lilypond-unstable = pkgs.callPackage ./misc/lilypond/unstable.nix { };
+  lilypond-unstable = pkgs.callPackage ./misc/lilypond/unstable.nix {
+    inherit lilypond;
+  };
   lilypond-with-fonts = pkgs.callPackage ./misc/lilypond/with-fonts.nix {
     lilypond = lilypond-unstable;
   };

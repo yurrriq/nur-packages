@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, ghostscript, texinfo, imagemagick, texi2html, guile
+{ stdenv, fetchgit, ghostscript, texinfo, imagemagick, texi2html, guile
 , python2, gettext, flex, perl, bison, pkgconfig, autoreconfHook, dblatex
 , fontconfig, freetype, pango, fontforge, help2man, zip, netpbm, groff
 , makeWrapper, rsync, t1utils
@@ -14,12 +14,13 @@ let
 in
 
 stdenv.mkDerivation {
-  name = "lilypond-${version}";
+  pname = "lilypond";
   inherit version;
 
-  src = fetchurl {
-    url = "http://download.linuxaudio.org/lilypond/sources/v${stdenv.lib.versions.majorMinor version}/lilypond-${version}.tar.gz";
-    sha256 = "01xs9x2wjj7w9appaaqdhk15r1xvvdbz9qwahzhppfmhclvp779j";
+  src = fetchgit {
+    url = "https://git.savannah.gnu.org/r/lilypond.git";
+    rev = "release/${version}-1";
+    sha256 = "0fk045fmmb6fcv7jdvkbqr04qlwnxzwclr2gzx3gja714xy6a76x";
   };
 
   postInstall = ''
@@ -60,9 +61,8 @@ stdenv.mkDerivation {
     license = licenses.gpl3;
     maintainers = with maintainers; [ marcweber yurrriq ];
     platforms = platforms.all;
+    broken = stdenv.isDarwin;
   };
 
   patches = [ ./findlib.patch ];
-
-  broken = stdenv.isDarwin;
 }
