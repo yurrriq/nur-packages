@@ -54,6 +54,7 @@ rec {
     lilypond = lilypond-unstable;
   };
 
+  mcrl2 = pkgs.callPackage ./applications/science/logic/mcrl2 {};
 
   noweb = pkgs.callPackage ./development/tools/literate-programming/noweb {
     inherit icon-lang;
