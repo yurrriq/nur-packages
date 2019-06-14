@@ -1,31 +1,24 @@
-{ stdenv, lndir, symlinkJoin, makeWrapper
-, lilypond, openlilylib-fonts
-, fonts ? openlilylib-fonts.all
-}:
+{ stdenv, makeWrapper, symlinkJoin, lilypond, openlilylib-fonts, fonts }:
+
+let
+  getFont = let _fonts = openlilylib-fonts.override { inherit lilypond; }; in
+    fontName:
+    if builtins.hasAttr fontName _fonts
+    then builtins.getAttr fontName _fonts
+    else throw "${fontName} is not a known font";
+in
 
 stdenv.lib.appendToName "with-fonts" (symlinkJoin {
-  inherit (lilypond) name version;
+  inherit (lilypond) meta name version;
 
-  paths = [ lilypond ];
+  paths = [ lilypond ] ++ map getFont fonts;
 
-  buildInputs = [ makeWrapper lndir ];
+  nativeBuildInputs = [ makeWrapper ];
 
   postBuild = ''
     local datadir="$out/share/lilypond/${lilypond.version}"
-    local fontsdir="$datadir/fonts"
-
-    install -m755 -d "$fontsdir/otf"
-    install -m755 -d "$fontsdir/svg"
-
-    ${stdenv.lib.concatMapStrings (font: ''
-          lndir -silent "${font}/otf" "$fontsdir/otf"
-          lndir -silent "${font}/svg" "$fontsdir/svg"
-      '') fonts}
-
-      for p in $out/bin/*; do
-          wrapProgram "$p" --set LILYPOND_DATADIR "$datadir"
-      done
+    for program in $out/bin/*; do
+      wrapProgram "$program" --set LILYPOND_DATADIR "$datadir"
+    done
   '';
-
-  inherit (lilypond) meta;
 })
