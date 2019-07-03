@@ -40,6 +40,8 @@ rec {
     withGraphics = false;
   };
 
+  kubefwd = pkgs.callPackage ./development/tools/kubefwd {};
+
   lab = pkgs.callPackage ./applications/version-management/git-and-tools/lab {};
 
   openlilylib-fonts = pkgs.callPackage ./misc/lilypond/fonts.nix { };
