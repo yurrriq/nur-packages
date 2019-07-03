@@ -72,12 +72,12 @@ rec {
 
   m-cli = pkgs.m-cli.overrideAttrs (_: rec {
     name = "m-cli-${version}";
-    version = "c658afcb";
+    version = "ffdcbde2";
     src = pkgs.fetchFromGitHub {
       owner = "rgcr";
       repo = "m-cli";
       rev = version;
-      sha256 = "1jjf4iqfkbi6jg1imcli3ajxwqpnqh7kiip4h3hc9wfwx639wljx";
+      sha256 = "1y7bl5i5i7da1k5yldc8fhj6jp2a33kci77kj5wmqkwpb2nkc5c2";
     };
   });
 
