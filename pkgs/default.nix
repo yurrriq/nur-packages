@@ -36,12 +36,6 @@ rec {
     meta.broken = true;
   });
 
-  helmfile = pkgs.callPackage ./applications/networking/cluster/helmfile {
-    buildGoModule = pkgs.buildGoModule.override {
-      go = pkgs.go_1_12;
-    };
-  };
-
   icon-lang = pkgs.callPackage ./development/interpreters/icon-lang {
     withGraphics = false;
   };
