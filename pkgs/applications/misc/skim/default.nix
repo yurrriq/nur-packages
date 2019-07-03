@@ -1,19 +1,20 @@
-{ stdenv, fetchurl, undmg }:
+{ stdenv, fetchsvn, xcbuildHook }:
 
 stdenv.mkDerivation rec {
   name = "skim-${version}";
-  version = "1.4.41";
+  version = "1.5.2";
 
-  src = fetchurl {
-    url = "https://downloads.sourceforge.net/skim-app/Skim/Skim-${version}/Skim-${version}.dmg";
-    sha256 = "0f8g1z4wg0bcsl8x50iq76x561w3dl1qzydx6vhhhr6rdd84k7si";
+  src = fetchsvn {
+    url = "https://svn.code.sf.net/p/skim-app/code/tags/REL_${builtins.replaceStrings ["."] ["_"] version}";
+    sha256 = "0l8jw8hfr391lx8jg7419d4pv35ihfwnwd82zfh194f6lvh2b9y0";
   };
 
-  buildInputs = [ undmg ];
+  nativeBuildInputs = [ xcbuildHook ];
+  xcbuildFlags = "-target Skim";
 
   installPhase = ''
     install -dm755 "$out/Applications/Skim.app"
-    cp -R . "$_"
+    cp -R Products/Release/Skim "$_"
     chmod a+x "$_/Contents/MacOS/Skim"
   '';
 
