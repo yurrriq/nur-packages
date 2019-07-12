@@ -2,7 +2,7 @@
 
 let
 
-  _nixpkgs = lib.pinnedNixpkgs (lib.fromJSONFile ../nixpkgs.json);
+  _nixpkgs = lib.pinnedNixpkgs (lib.fromJSONFile ../nix/nixpkgs.json);
 
 in
 
