@@ -9,7 +9,9 @@ in
 rec {
   inherit (lib) buildK8sEnv;
 
-  inherit (_nixpkgs) autojump conftest eksctl kitty sops;
+  inherit (lib.pinnedNixpkgs (lib.fromJSONFile ../nix/nixos-19.03.json)) kitty;
+
+  inherit (_nixpkgs) autojump conftest eksctl sops;
   inherit (_nixpkgs.gitAndTools) git-crypt;
 
   cedille = (_nixpkgs.cedille.override {
