@@ -96,8 +96,6 @@ rec {
 
 } else {
 
-  inherit (_nixpkgs) browserpass;
-
   tellico = (pkgs.libsForQt5.callPackage ./applications/misc/tellico {}).overrideAttrs (_: {
     meta.broken = true;
   });
