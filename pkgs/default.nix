@@ -12,7 +12,6 @@ rec {
   inherit (lib.pinnedNixpkgs (lib.fromJSONFile ../nix/nixos-19.03.json)) kitty;
 
   inherit (_nixpkgs) autojump conftest eksctl sops;
-  inherit (_nixpkgs.gitAndTools) git-crypt;
 
   cedille = (_nixpkgs.cedille.override {
     inherit (pkgs.haskellPackages) alex happy Agda ghcWithPackages;
