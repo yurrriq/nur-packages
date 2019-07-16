@@ -50,6 +50,8 @@ rec {
 
   gap-pygments-lexer.meta.broken = true;
 
+  lilypond.meta.broken = true;
+
 } // (if pkgs.stdenv.isDarwin then {
 
   chunkwm = pkgs.recurseIntoAttrs (pkgs.callPackage ./os-specific/darwin/chunkwm {
