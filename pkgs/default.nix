@@ -50,7 +50,10 @@ rec {
 
   gap-pygments-lexer.meta.broken = true;
 
+  openlilylib-fonts.meta.broken = true;
   lilypond.meta.broken = true;
+  lilypond-unstable.meta.broken = true;
+  lilypond-with-fonts.meta.broken = true;
 
 } // (if pkgs.stdenv.isDarwin then {
 
