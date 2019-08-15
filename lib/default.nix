@@ -56,22 +56,7 @@ rec {
     '';
   });
 
-  mkKops =  { pkgs, version, sha256 }: pkgs.kops.overrideAttrs(old: rec {
-    pname = "kops";
-    name = "${pname}-${version}";
-    inherit version;
-    src = pkgs.fetchFromGitHub {
-      rev = version;
-      owner = "kubernetes";
-      repo = "kops";
-      inherit sha256;
-    };
-    buildFlagsArray = ''
-      -ldflags=
-          -X k8s.io/kops.Version=${version}
-          -X k8s.io/kops.GitVersion=${version}
-    '';
-  });
+  mkKops = { pkgs, version, sha256 }@args: pkgs.mkKops (builtins.removeAttrs args ["pkgs"]);
 
   mkKubernetes = { pkgs, version, sha256 }: pkgs.kubernetes.overrideAttrs(old: rec {
     pname = "kubernetes";
