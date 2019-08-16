@@ -58,7 +58,17 @@ rec {
 
   mkKops = { pkgs, version, sha256 }@args: pkgs.mkKops (builtins.removeAttrs args ["pkgs"]);
 
-  mkKubernetes = { pkgs, version, sha256 }@args: pkgs.mkKubernetes (builtins.removeAttrs args ["pkgs"]);
+  mkKubernetes = { pkgs, version, sha256 }: pkgs.kubernetes.overrideAttrs(old: rec {
+    pname = "kubernetes";
+    name = "${pname}-${version}";
+    inherit version;
+    src = pkgs.fetchFromGitHub {
+      owner = "kubernetes";
+      repo = "kubernetes";
+      rev = "v${version}";
+      inherit sha256;
+    };
+  });
 
   buildK8sEnv = { pkgs, name, config }:
     let
