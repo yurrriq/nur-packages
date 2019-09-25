@@ -39,7 +39,7 @@ rec {
     pythonPackages = pkgs.python2Packages;
   };
 
-  icon-lang = pkgs.callPackage ./development/interpreters/icon-lang {
+  icon-lang = _nixpkgs.icon-lang.override {
     withGraphics = false;
   };
 
@@ -56,7 +56,7 @@ rec {
     lilypond = lilypond-unstable;
   };
 
-  noweb = pkgs.callPackage ./development/tools/literate-programming/noweb {
+  noweb = _nixpkgs.noweb.override {
     inherit icon-lang;
   };
 
