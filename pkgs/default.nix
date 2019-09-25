@@ -20,6 +20,7 @@ rec {
     next
     pass
     sops
+    thunderbird
     tomb
     ;
 
