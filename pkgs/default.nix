@@ -11,6 +11,10 @@ rec {
 
   inherit (_nixpkgs) autojump cachix conftest elixir_1_8 eksctl firefox sops;
 
+  rust-cbindgen = _nixpkgs.rust-cbindgen.overrideAttrs(_: {
+    cargoSha256 = "1l2dmvpg7114g7kczhaxv97037wdjah174xa992hv90a79kiz8da";
+  });
+
   cedille = _nixpkgs.cedille.override {
     inherit (pkgs.haskellPackages) alex happy Agda ghcWithPackages;
   };
