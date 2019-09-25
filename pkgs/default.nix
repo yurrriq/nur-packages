@@ -11,12 +11,17 @@ rec {
 
   inherit (_nixpkgs)
     autojump
+    browserpass
     cachix
     conftest
     elixir_1_8
     eksctl
     firefox
-    sops;
+    next
+    pass
+    sops
+    tomb
+    ;
 
   rust-cbindgen = _nixpkgs.rust-cbindgen.overrideAttrs(_: {
     cargoSha256 = "1l2dmvpg7114g7kczhaxv97037wdjah174xa992hv90a79kiz8da";
