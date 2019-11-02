@@ -16,6 +16,7 @@ rec {
     conftest
     # elixir_1_8
     eksctl
+    expat # NOTE: https://github.com/NixOS/nixpkgs/issues/71075
     firefox
     # TODO: next
     pass
