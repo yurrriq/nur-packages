@@ -80,8 +80,6 @@ rec {
 
 } else {}) // {
 
-  cachix.meta.broken = true;
-
   gap-pygments-lexer.meta.broken = true;
 
   openlilylib-fonts.meta.broken = true;
