@@ -87,6 +87,4 @@ rec {
   lilypond-unstable.meta.broken = true;
   lilypond-with-fonts.meta.broken = true;
 
-  thunderbird.meta.broken = true;
-
 }
