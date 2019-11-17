@@ -4,9 +4,8 @@ let
 
   olpFont = { fontName, rev, sha256, version ? rev, ... }:
     stdenv.mkDerivation {
-      inherit version;
       pname = "openlilypond-font-${fontName}";
-
+      inherit version;
 
       src = fetchFromGitHub {
         inherit rev sha256;
@@ -21,12 +20,12 @@ let
 
         install -m755 -d "$fontsdir/otf"
         for font in {otf,supplementary-fonts}/**.{o,t}tf; do
-          install -Dt "$fontsdir/otf" -m755 "$font"
+            install -Dt "$fontsdir/otf" -m755 "$font"
         done
 
         install -m755 -d "$fontsdir/svg"
         for font in svg/**.{svg,woff}; do
-          install -Dt "$fontsdir/svg" -m755 "$font"
+            install -Dt "$fontsdir/svg" -m755 "$font"
         done
       '';
 
