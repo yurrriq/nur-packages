@@ -2,45 +2,41 @@
 
 let
 
-  _nixpkgs = lib.pinnedNixpkgs (lib.fromJSONFile ../nixpkgs.json);
+  _nixpkgs = lib.pinnedNixpkgs (lib.fromJSONFile ../nix/nixpkgs.json);
 
 in
 
 rec {
   inherit (lib) buildK8sEnv;
 
-  inherit (_nixpkgs) autojump conftest eksctl kitty sops;
-  inherit (_nixpkgs.gitAndTools) git-crypt;
+  inherit (_nixpkgs)
+    autojump
+    # FIXME: browserpass
+    cachix
+    conftest
+    # elixir_1_8
+    eksctl
+    expat # NOTE: https://github.com/NixOS/nixpkgs/issues/71075
+    firefox
+    # TODO: next
+    pass
+    # FIXME: ripgrep
+    # FIXME: sops
+    thunderbird
+    tomb
+    ;
 
-  cedille = (_nixpkgs.cedille.override {
-    inherit (pkgs.haskellPackages) alex happy Agda ghcWithPackages;
-  }).overrideAttrs (_: {
-    meta.broken = true;
-  });
+  browserpass = _nixpkgs.callPackage ./tools/security/browserpass {};
 
-  emacsPackages.cedille = _nixpkgs.emacsPackages.cedille.override {
-    inherit cedille;
-  };
+  elba = pkgs.callPackage ./development/tools/elba {};
 
-  inherit (_nixpkgs) elixir_1_8;
-
-  erlang = pkgs.beam.interpreters.erlangR21.override {
-    enableDebugInfo = true;
-    installTargets = "install";
-    wxSupport = false;
-  };
-
-  gap-pygments-lexer = (pkgs.callPackage ./tools/misc/gap-pygments-lexer {
+  gap-pygments-lexer = pkgs.callPackage ./tools/misc/gap-pygments-lexer {
     pythonPackages = pkgs.python2Packages;
-  }).overrideAttrs (_: {
-    meta.broken = true;
-  });
+  };
 
-  icon-lang = pkgs.callPackage ./development/interpreters/icon-lang {
+  icon-lang = _nixpkgs.icon-lang.override {
     withGraphics = false;
   };
-
-  kubefwd = pkgs.callPackage ./development/tools/kubefwd {};
 
   lab = pkgs.callPackage ./applications/version-management/git-and-tools/lab {};
 
@@ -58,52 +54,42 @@ rec {
 
   mcrl2 = pkgs.callPackage ./applications/science/logic/mcrl2 {};
 
-  noweb = pkgs.callPackage ./development/tools/literate-programming/noweb {
+  noweb = _nixpkgs.noweb.override {
     inherit icon-lang;
   };
 
-} // (if pkgs.stdenv.isDarwin then {
-
-  chunkwm = pkgs.recurseIntoAttrs (pkgs.callPackage ./os-specific/darwin/chunkwm {
-    inherit (pkgs) callPackage stdenv fetchFromGitHub imagemagick;
-    inherit (pkgs.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
-  });
-
-  clementine = pkgs.callPackage ./applications/audio/clementine {};
-
-  copyq = pkgs.callPackage ./applications/misc/copyq {};
-
-  diff-pdf = pkgs.callPackage ./tools/text/diff-pdf {
-    inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa;
+  python35Packages = pkgs.python35Packages // {
+    inherit ((lib.pinnedNixpkgs {
+      rev = "97ce5d27e87af578dc964a0dba740c7531d75590";
+      sha256 = "1w6j98kh6x784z5dax36pd87cxsyfi53gq67hgwwkdbnmww2q5jj";
+    }).python35Packages) bugwarrior;
   };
 
-  m-cli = pkgs.m-cli.overrideAttrs (_: rec {
-    name = "m-cli-${version}";
-    version = "ffdcbde2";
-    src = pkgs.fetchFromGitHub {
-      owner = "rgcr";
-      repo = "m-cli";
-      rev = version;
-      sha256 = "1y7bl5i5i7da1k5yldc8fhj6jp2a33kci77kj5wmqkwpb2nkc5c2";
-    };
+  renderizer = pkgs.callPackage ./development/tools/renderizer {};
+
+  ripgrep = _nixpkgs.callPackage ./tools/text/ripgrep {
+    inherit (_nixpkgs.darwin.apple_sdk.frameworks) Security;
+  };
+
+  rust-cbindgen = _nixpkgs.rust-cbindgen.overrideAttrs(_: {
+    cargoSha256 = "1l2dmvpg7114g7kczhaxv97037wdjah174xa992hv90a79kiz8da";
   });
 
-  inherit (_nixpkgs) musescore skhd;
+  sops = _nixpkgs.callPackage ./tools/security/sops {};
 
-  onyx = pkgs.callPackage ./os-specific/darwin/onyx {};
+} // (if pkgs.stdenv.isLinux then {
 
-  skim = pkgs.callPackage ./applications/misc/skim {};
+  apfs-fuse = pkgs.callPackage ./os-specific/linux/apfs-fuse {
+    fuse = pkgs.fuse3;
+  };
 
-  sourcetree = pkgs.callPackage ./os-specific/darwin/sourcetree {};
+} else {}) // {
 
-  spotify = pkgs.callPackage ./applications/audio/spotify/darwin.nix {};
+  gap-pygments-lexer.meta.broken = true;
 
-} else {
+  openlilylib-fonts.meta.broken = true;
+  lilypond.meta.broken = true;
+  lilypond-unstable.meta.broken = true;
+  lilypond-with-fonts.meta.broken = true;
 
-  inherit (_nixpkgs) browserpass;
-
-  tellico = (pkgs.libsForQt5.callPackage ./applications/misc/tellico {}).overrideAttrs (_: {
-    meta.broken = true;
-  });
-
-})
+}
