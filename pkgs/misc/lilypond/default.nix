@@ -34,7 +34,7 @@ let
 
     configureFlags = [
       "--with-ncsb-dir=${ghostscript}/share/ghostscript/fonts"
-    ] ++ stdenv.lib.optional withDocs "--disable-documentation";
+    ] ++ stdenv.lib.optional (!withDocs) "--disable-documentation";
 
     preConfigure = ''
       sed -e "s@mem=mf2pt1@mem=$PWD/mf/mf2pt1@" -i scripts/build/mf2pt1.pl

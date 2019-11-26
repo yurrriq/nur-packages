@@ -48,9 +48,10 @@ rec {
     inherit lilypond;
   };
 
-  lilypond-with-fonts = pkgs.callPackage ./misc/lilypond/with-fonts.nix {
-    lilypond = lilypond-unstable;
-  };
+  lilypond-improviso-lilyjazz = lilypond-unstable.with-fonts [
+    "improviso"
+    "lilyjazz"
+  ];
 
   # FIXME: mcrl2 = pkgs.callPackage ./applications/science/logic/mcrl2 {};
 

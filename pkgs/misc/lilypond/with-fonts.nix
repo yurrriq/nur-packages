@@ -1,4 +1,4 @@
-{ stdenv, lndir, makeWrapper, symlinkJoin, lilypond, openlilylib-fonts, fonts }:
+{ stdenv, makeWrapper, symlinkJoin, lilypond, openlilylib-fonts, fonts }:
 
 let
   _fonts = openlilylib-fonts.override { inherit lilypond; };
@@ -16,19 +16,14 @@ symlinkJoin {
   name = (stdenv.lib.appendToName "with-fonts" lilypond).name;
   inherit (lilypond) meta version;
 
-  paths = [ lilypond ];
+  paths = [ lilypond ] ++ fontPaths;
 
   nativeBuildInputs = [ makeWrapper ];
 
   postBuild = ''
-    local datadir="$out/share/lilypond/${lilypond.version}"
-
-    for dir in ${stdenv.lib.strings.concatStringsSep " " fontPaths}; do
-        ${lndir}/bin/lndir -silent "$dir" "$datadir"/fonts
-    done
-
     for program in $out/bin/*; do
-        wrapProgram "$program" --set LILYPOND_DATADIR "$datadir"
+        wrapProgram "$program" \
+            --set LILYPOND_DATADIR "$out/share/lilypond/${lilypond.version}"
     done
   '';
 }
