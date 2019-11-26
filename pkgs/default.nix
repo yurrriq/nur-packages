@@ -1,8 +1,8 @@
-{ lib, pkgs }:
+{ lib, pkgs, sources ? import ../nix/sources.nix }:
 
 let
 
-  _nixpkgs = lib.pinnedNixpkgs (lib.fromJSONFile ../nix/nixpkgs.json);
+  _nixpkgs = import sources.nixpkgs-unstable {};
 
 in
 
@@ -52,17 +52,14 @@ rec {
     lilypond = lilypond-unstable;
   };
 
-  mcrl2 = pkgs.callPackage ./applications/science/logic/mcrl2 {};
+  # FIXME: mcrl2 = pkgs.callPackage ./applications/science/logic/mcrl2 {};
 
   noweb = _nixpkgs.noweb.override {
     inherit icon-lang;
   };
 
   python35Packages = pkgs.python35Packages // {
-    inherit ((lib.pinnedNixpkgs {
-      rev = "97ce5d27e87af578dc964a0dba740c7531d75590";
-      sha256 = "1w6j98kh6x784z5dax36pd87cxsyfi53gq67hgwwkdbnmww2q5jj";
-    }).python35Packages) bugwarrior;
+    inherit ((import sources.nixpkgs-66234 {}).python35Packages) bugwarrior;
   };
 
   renderizer = pkgs.callPackage ./development/tools/renderizer {};
