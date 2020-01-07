@@ -30,6 +30,8 @@ rec {
     tomb
     ;
 
+  bugwarrior = _nixpkgs.python38Packages.bugwarrior;
+
   elba = pkgs.callPackage ./development/tools/elba {};
 
   gap-pygments-lexer = pkgs.callPackage ./tools/misc/gap-pygments-lexer {
@@ -59,10 +61,6 @@ rec {
 
   noweb = _nixpkgs-stable.noweb.override {
     inherit icon-lang;
-  };
-
-  python38Packages = pkgs.python38Packages // {
-    inherit ((import sources.nixpkgs-66234 {}).python38Packages) bugwarrior;
   };
 
   renderizer = pkgs.callPackage ./development/tools/renderizer {};
