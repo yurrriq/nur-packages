@@ -65,8 +65,4 @@ rec {
 
   renderizer = pkgs.callPackage ./development/tools/renderizer {};
 
-  rust-cbindgen = _nixpkgs.rust-cbindgen.overrideAttrs(_: {
-    cargoSha256 = "1l2dmvpg7114g7kczhaxv97037wdjah174xa992hv90a79kiz8da";
-  });
-
 } // (import ./broken.nix { inherit pkgs; })
