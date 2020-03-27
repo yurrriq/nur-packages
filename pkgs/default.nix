@@ -5,6 +5,8 @@ let
   _nixpkgs-stable = import sources.nixpkgs {};
 
   _nixpkgs-78800 = import sources.nixpkgs-78800 {};
+
+  _nixpkgs-83519 = import sources.nixpkgs-83519 {};
 in
 rec
 {
@@ -12,6 +14,9 @@ rec
 
   inherit (_nixpkgs-78800)
     scc;
+
+  inherit (_nixpkgs-83519)
+    kubelogin;
 
   inherit (_nixpkgs-stable)
     cachix;
