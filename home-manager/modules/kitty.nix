@@ -56,33 +56,33 @@ let
     };
   };
 
-  # NOTE: https://raw.githubusercontent.com/dexpota/kitty-themes/c4bee86/themes/Solarized_Dark_Higher_Contrast.conf
+  # NOTE: https://raw.githubusercontent.com/dexpota/kitty-themes/master/themes/Wombat.conf
   configFile = pkgs.writeText "kitty.conf" (optionalString (cfg.config != null) ''
     scrollback_lines ${toString cfg.config.scrollbackLines}
     editor ${cfg.config.editor}
     shell ${cfg.config.shell}
     term ${cfg.config.term}
-    background            #001e26
-    foreground            #9bc1c2
-    cursor                #f34a00
-    selection_background  #003747
-    color0                #002731
-    color8                #006388
-    color1                #d01b24
-    color9                #f4153b
-    color2                #6bbe6c
-    color10               #50ee84
-    color3                #a57705
-    color11               #b17e28
-    color4                #2075c7
-    color12               #178dc7
-    color5                #c61b6e
-    color13               #e14d8e
-    color6                #259185
-    color14               #00b29e
-    color7                #e9e2cb
-    color15               #fcf4dc
-    selection_foreground #001e26
+    background            #171717
+    foreground            #ded9ce
+    cursor                #bbbbbb
+    selection_background  #453a39
+    color0                #000000
+    color8                #313131
+    color1                #ff605a
+    color9                #f58b7f
+    color2                #b1e869
+    color10               #dcf88f
+    color3                #ead89c
+    color11               #eee5b2
+    color4                #5da9f6
+    color12               #a5c7ff
+    color5                #e86aff
+    color13               #ddaaff
+    color6                #82fff6
+    color14               #b6fff9
+    color7                #ded9ce
+    color15               #fefffe
+    selection_foreground #171717
     kitty_mod ${cfg.config.modifier}
     map kitty_mod+enter new_window_with_cwd
     map kitty_mod+k combine : clear_terminal scrollback active : send_text normal \x0c
