@@ -43,6 +43,8 @@ rec
     pythonPackages = pkgs.python2Packages;
   };
 
+  helmfile = pkgs.callPackage ./applications/networking/cluster/helmfile {};
+
   icon-lang = _nixpkgs-stable.icon-lang.override {
     withGraphics = false;
   };
