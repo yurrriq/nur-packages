@@ -26,6 +26,7 @@ rec
     sops
     thunderbird
     tomb
+    yq
     ;
 
   bugwarrior = _nixpkgs.python38Packages.bugwarrior;
@@ -70,7 +71,6 @@ rec
     inherit icon-lang;
   };
 
-  yq = pkgs.python3Packages.callPackage ./development/tools/yq { };
 }
 // (
   if pkgs.stdenv.isLinux
