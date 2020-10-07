@@ -1,16 +1,10 @@
 { pkgs, sources ? import ../nix/sources.nix }:
 let
   _nixpkgs = import sources.nixpkgs-unstable { };
-
   _nixpkgs-stable = import sources.nixpkgs { };
-
-  _nixpkgs-83519 = import sources.nixpkgs-83519 { };
 in
 rec
 {
-
-  inherit (_nixpkgs-83519)
-    kubelogin;
 
   inherit (_nixpkgs-stable)
     cachix;
@@ -23,6 +17,7 @@ rec
     # elixir_1_8
     eksctl
     firefox
+    kubelogin
     # TODO: next
     pass
     renderizer
