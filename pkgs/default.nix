@@ -19,7 +19,7 @@ rec
     ripgrep
     scc
     sops
-    thunderbird
+    # thunderbird
     tomb
     yq
     ;
