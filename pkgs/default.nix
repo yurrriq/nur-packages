@@ -11,7 +11,7 @@ rec
     browserpass
     conftest
     eksctl
-    firefox
+    # firefox
     kubelogin
     # TODO: next
     pass
